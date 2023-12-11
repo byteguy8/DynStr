@@ -15,6 +15,8 @@ struct _dynstr_ *dynstr_create(unsigned char *text, int *err);
 
 int dynstr_insert_at(unsigned char *text, unsigned long at, struct _dynstr_ *str);
 
+char *dynstr_sub_str(unsigned long from, unsigned long to, struct _dynstr_ *str, int *err);
+
 void dynstr_destroy(struct _dynstr_ *str);
 
 #define dynstr_print(str) (str->characters)

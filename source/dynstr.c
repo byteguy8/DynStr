@@ -12,10 +12,10 @@ void _set_err_(int *err, int status)
     }
 }
 
-unsigned char *_sub_str_alloc(unsigned long from, unsigned long to, unsigned char *text, int *err)
+unsigned char *_sub_str_alloc_(unsigned long from, unsigned long to, unsigned char *text, int *err)
 {
     const unsigned long txt_len = strlen(text);
-    const unsigned long sub_txt_len = to;
+    const unsigned long sub_txt_len = to - from + 1;
 
     const unsigned long txt_size = sizeof(unsigned char) * txt_len;
     const unsigned long sub_txt_size = sizeof(unsigned char) * sub_txt_len;
@@ -145,6 +145,11 @@ struct _dynstr_ *dynstr_create(unsigned char *text, int *err)
 int dynstr_insert_at(unsigned char *text, unsigned long at, struct _dynstr_ *str)
 {
     return _insert_(at, text, str);
+}
+
+char *dynstr_sub_str(unsigned long from, unsigned long to, struct _dynstr_ *str, int *err)
+{
+    return _sub_str_alloc_(from, to, str->characters, err);
 }
 
 void dynstr_destroy(struct _dynstr_ *str)
