@@ -18,7 +18,7 @@ unsigned char *_sub_str_alloc_(unsigned long from, unsigned long to, unsigned ch
     const unsigned long sub_txt_len = to - from + 1;
 
     const unsigned long txt_size = sizeof(unsigned char) * txt_len;
-    const unsigned long sub_txt_size = sizeof(unsigned char) * sub_txt_len;
+    const unsigned long sub_txt_size = sizeof(unsigned char) * (sub_txt_len + 1);
 
     unsigned char *chars = (unsigned char *)malloc(sub_txt_size);
 
@@ -29,6 +29,7 @@ unsigned char *_sub_str_alloc_(unsigned long from, unsigned long to, unsigned ch
     }
 
     memcpy(chars, text + from, sub_txt_size);
+    memset(chars + sub_txt_len, 0, sizeof(unsigned char));
 
     return chars;
 }
