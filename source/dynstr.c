@@ -143,6 +143,27 @@ struct _dynstr_ *dynstr_create(unsigned char *text, int *err)
     return str;
 }
 
+int dynstr_set(unsigned char *text, struct _dynstr_ *str)
+{
+    const unsigned long text_len = strlen(text);
+    const unsigned long text_size = sizeof(unsigned char) * text_len;
+
+    unsigned char *buffer = realloc(str->characters, text_size + sizeof(unsigned char));
+
+    if (!buffer)
+    {
+        return DYNSTR_ERR_ALLOC_MEM;
+    }
+
+    memcpy(buffer, text, text_size);
+    memset(buffer + text_len, 0, sizeof(unsigned char));
+
+    str->characters = buffer;
+    str->length = text_len;
+
+    return DYNSTR_OK;
+}
+
 int dynstr_insert_at(unsigned char *text, unsigned long at, struct _dynstr_ *str)
 {
     return _insert_(at, text, str);
