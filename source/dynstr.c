@@ -1,6 +1,5 @@
 #include "dynstr.h"
 #include "dynstr_codes.h"
-
 #include <stdlib.h>
 #include <string.h>
 
@@ -14,11 +13,17 @@ void _set_err_(int *err, int status)
 
 unsigned char *_sub_str_alloc_(unsigned long from, unsigned long to, unsigned char *text, int *err)
 {
-    const unsigned long txt_len = strlen(text);
-    const unsigned long sub_txt_len = to - from + 1;
+    const unsigned long text_len = strlen(text);
+    const unsigned long sub_text_len = to - from + 1;
 
-    const unsigned long txt_size = sizeof(unsigned char) * txt_len;
-    const unsigned long sub_txt_size = sizeof(unsigned char) * (sub_txt_len + 1);
+    if (from > to || to >= text_len)
+    {
+        _set_err_(err, DYNSTR_ILLEGAL_INDEX);
+        return NULL;
+    }
+
+    const unsigned long txt_size = sizeof(unsigned char) * text_len;
+    const unsigned long sub_txt_size = sizeof(unsigned char) * (sub_text_len + 1);
 
     unsigned char *chars = (unsigned char *)malloc(sub_txt_size);
 
@@ -29,7 +34,7 @@ unsigned char *_sub_str_alloc_(unsigned long from, unsigned long to, unsigned ch
     }
 
     memcpy(chars, text + from, sub_txt_size);
-    memset(chars + sub_txt_len, 0, sizeof(unsigned char));
+    memset(chars + sub_text_len, 0, sizeof(unsigned char));
 
     return chars;
 }
@@ -169,7 +174,7 @@ int dynstr_insert_at(unsigned char *text, unsigned long at, struct _dynstr_ *str
     return _insert_(at, text, str);
 }
 
-char *dynstr_sub_str(unsigned long from, unsigned long to, struct _dynstr_ *str, int *err)
+unsigned char *dynstr_sub_str(unsigned long from, unsigned long to, struct _dynstr_ *str, int *err)
 {
     return _sub_str_alloc_(from, to, str->characters, err);
 }
