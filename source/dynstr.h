@@ -1,3 +1,5 @@
+// DynStr 1.0.0
+
 #ifndef _DYNSTR_H_
 #define _DYNSTR_H_
 
